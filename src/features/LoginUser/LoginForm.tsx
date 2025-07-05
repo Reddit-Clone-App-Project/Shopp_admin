@@ -1,16 +1,45 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { handleLogin } from './LoginSlice';
+import type { AppDispatch, RootState } from '../../redux/store';
 
 export type LoginFormProps = {
     onSubmit: (email: string, password: string) => void;
 }
 
-const LoginForm = ({onSubmit} : LoginFormProps) => {
+const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || '/home';
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { status, error, isLoggedIn } = useSelector((state: RootState) => state.loginReducer);
+
+  useEffect(() => {
+    if(isLoggedIn) {
+      navigate('/home');
+    }
+  }, [isLoggedIn, navigate]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit(email, password);
+    
+    try{
+      const accessToken = await dispatch(handleLogin({ email, password })).unwrap();
+    
+      if(accessToken) {
+        toast.success('Login successful!');        
+        navigate(from, { replace: true });
+      }
+    }
+    catch(err: any) {
+      const errorMsg = err?.message || 'Login failed. Please try again.';
+      toast.error(errorMsg);
+    }
   }
 
   return (
@@ -43,7 +72,13 @@ const LoginForm = ({onSubmit} : LoginFormProps) => {
                 onChange={(e) => setPassword(e.target.value)}
             />
         </div>
-        <button type="submit" className='bg-purple-900 text-white rounded-2xl h-8 w-24 mt-5 hover:bg-purple-800 transition-colors duration-200 cursor-pointer'>Login</button>
+        <button 
+          type="submit" 
+          disabled={!email || !password || status === 'loading'}
+          className='bg-purple-900 text-white rounded-2xl h-8 w-24 mt-5 hover:bg-purple-800 transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'
+        >
+            {status === 'loading' ? 'Logging in...' : 'Login'}
+        </button>
     </form>
   )
 }
