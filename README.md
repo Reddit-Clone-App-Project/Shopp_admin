@@ -2,14 +2,14 @@
 
 This repository contains the source code for the Admin Panel of the Shopp E-commerce Platform. This application is used by administrators to manage products, view orders, handle user accounts, and oversee the general operations of the main e-commerce site.
 
-This panel is a client-side application built with React and communicates with the **[Shopp E-commerce Platform Server]([Link to your server repository here])** via a RESTful API.
+This panel is a client-side application built with React and communicates with the **[Shopp E-commerce Platform Server] https://github.com/Reddit-Clone-App-Project/Shopp_server** via a RESTful API.
 
 ## 🔗 Project Ecosystem
 
 This Admin Panel is one of three core components of the Shopp E-commerce Platform. To understand the full system, please see the other repositories:
 
-* **🛍️ Shopp Client:** The main customer-facing storefront. **[Link to the client repository here]**
-* **🗄️ Shopp Server:** The backend API that powers both the client and this admin panel. **[Link to the server repository here]**
+* **🛍️ Shopp Client:** The main customer-facing storefront. **https://github.com/Reddit-Clone-App-Project/Shopp_client**
+* **🗄️ Shopp Server:** The backend API that powers both the client and this admin panel. **https://github.com/Reddit-Clone-App-Project/Shopp_server**
 
 ## 🤝 We're Open to Contributions!
 
@@ -39,7 +39,7 @@ To get a local copy of the admin panel up and running, follow these steps.
 
 * [Node.js](https://nodejs.org/) (version 18 or higher is recommended).
 * `npm` or `yarn` installed.
-* **A running instance of the [Shopp E-commerce Platform Server]([Link to your server repository here])**. This admin panel will not function without the backend API.
+* **A running instance of the [Shopp E-commerce Platform Server] https://github.com/Reddit-Clone-App-Project/Shopp_server**. This admin panel will not function without the backend API.
 
 ### Installation & Setup
 
