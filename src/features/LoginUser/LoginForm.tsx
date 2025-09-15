@@ -10,19 +10,19 @@ export type LoginFormProps = {
 }
 
 const LoginForm = () => {
-  const [role, setRole] = useState<'admin' | 'shipper' | 'storage'>('admin');
+  const [roleSelection, setRoleSelection] = useState<'admin' | 'shipper' | 'storage'>('admin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from || '/home';
+  const { status, error, isLoggedIn, role } = useSelector((state: RootState) => state.loginReducer);
+  const from = location.state?.from || ((role === 'normal' || role === 'super') ? '/admin' : '/storage');
 
-  const { status, error, isLoggedIn } = useSelector((state: RootState) => state.loginReducer);
 
   useEffect(() => {
     if(isLoggedIn) {
-      navigate('/home');
+      navigate(from, { replace: true });
     }
   }, [isLoggedIn, navigate]);
 
@@ -32,7 +32,7 @@ const LoginForm = () => {
     try{
       let accessToken;
 
-      switch(role){
+      switch(roleSelection){
         case 'admin':
           accessToken = await dispatch(handleLogin({ email, password }));
           break;
@@ -59,9 +59,9 @@ const LoginForm = () => {
     <>
       <p className='m-0'>Login as:</p>
       <div className='flex items-center gap-4'>
-        <button onClick={() => setRole('admin')} className={`bg-gray-600 text-white rounded-2xl h-8 w-24 mt-5 hover:bg-purple-800 transition-colors duration-200 cursor-pointer ${role === 'admin' ? 'bg-purple-800' : ''}`}>Admin</button>
-        <button onClick={() => setRole('shipper')} className={`bg-gray-600 text-white rounded-2xl h-8 w-24 mt-5 hover:bg-purple-800 transition-colors duration-200 cursor-pointer ${role === 'shipper' ? 'bg-purple-800' : ''}`}>Shipper</button>
-        <button onClick={() => setRole('storage')} className={`bg-gray-600 text-white rounded-2xl h-8 w-24 mt-5 hover:bg-purple-800 transition-colors duration-200 cursor-pointer ${role === 'storage' ? 'bg-purple-800' : ''}`}>Storage</button>
+        <button onClick={() => setRoleSelection('admin')} className={`bg-gray-600 text-white rounded-2xl h-8 w-24 mt-5 hover:bg-purple-800 transition-colors duration-200 cursor-pointer ${roleSelection === 'admin' ? 'bg-purple-800' : ''}`}>Admin</button>
+        <button onClick={() => setRoleSelection('shipper')} className={`bg-gray-600 text-white rounded-2xl h-8 w-24 mt-5 hover:bg-purple-800 transition-colors duration-200 cursor-pointer ${roleSelection === 'shipper' ? 'bg-purple-800' : ''}`}>Shipper</button>
+        <button onClick={() => setRoleSelection('storage')} className={`bg-gray-600 text-white rounded-2xl h-8 w-24 mt-5 hover:bg-purple-800 transition-colors duration-200 cursor-pointer ${roleSelection === 'storage' ? 'bg-purple-800' : ''}`}>Storage</button>
       </div>
 
       <form onSubmit={handleSubmit} className='flex flex-col items-center justify-center space-y-2'>
