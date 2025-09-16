@@ -16,7 +16,7 @@ const LoginForm = () => {
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { status, error, isLoggedIn, role } = useSelector((state: RootState) => state.loginReducer);
+  const { status, isLoggedIn, role } = useSelector((state: RootState) => state.loginReducer);
   const from = location.state?.from || ((role === 'normal' || role === 'super') ? '/admin' : '/storage');
 
 

@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage-ui": "vitest --ui --coverage.enabled=true"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
